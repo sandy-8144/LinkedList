@@ -8,7 +8,12 @@ public class TestExecutor {
 		slist.add(2);
 		slist.add(10);
 		slist.add(1);
+		System.out.println(slist);		
+		slist.delete(10);		
 		System.out.println(slist);
+		slist.delete(5);
+		System.out.println(slist);
+		
 		
 	}
 }

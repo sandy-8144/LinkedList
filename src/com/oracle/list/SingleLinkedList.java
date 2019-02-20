@@ -32,6 +32,24 @@ public class SingleLinkedList {
 		return;					
 	}
 	
+	public void delete(int data)
+	{
+		Node n = head;
+		
+		if(n.data == data)
+			head = n.next;
+		
+		while(n.next!=null)
+		{
+			if(n.next.data==data)
+			{				
+				n.next=n.next.next;
+			}
+			n = n.next;
+		}
+		
+	}
+	
 	@Override
 	public String toString() {
 		
