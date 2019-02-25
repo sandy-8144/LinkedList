@@ -1,6 +1,6 @@
 package com.oracle.list;
 
-
+import com.oracle.stack.Stack;
 
 public class TestExecutor {
 
@@ -62,6 +62,9 @@ public class TestExecutor {
 		dlist.delete(13);
 		System.out.println(dlist);
 		System.out.println(dlist.traverserList());
+		
+		
+		
 		
 		
 	}

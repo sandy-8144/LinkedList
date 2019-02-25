@@ -35,6 +35,17 @@ public class SingleLinkedList {
 		return;					
 	}
 	
+	public void addFirst(int data) {
+		Node node = new Node(data);
+		if(head==null)
+			head = node;
+		
+		node.next=head;
+		head=node;
+		
+	}
+	
+	
 	public void delete(int data)
 	{
 		Node n = head;		
