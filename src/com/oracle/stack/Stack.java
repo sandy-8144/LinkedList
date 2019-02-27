@@ -51,10 +51,60 @@ public class Stack {
 		return top.data;
 	}
 	
+	public Stack sortStack() {
+		
+		Stack temp = new Stack();
+		
+		while(!this.isEmpty()) {
+			
+			int data = this.pop();
+			if(temp.isEmpty()) {
+				temp.push(data);
+				continue;
+			}
+			
+			while(!temp.isEmpty() && data<temp.peek()) {
+				this.push(temp.pop());
+				
+				
+			}
+			
+			temp.push(data);
+						
+		}
+		
+		return temp;
+	}
+	
+	public Stack sortedMerge( Stack b ) {
+		
+		Stack result = new Stack();
+		
+		while (!this.isEmpty() && !b.isEmpty()) {
+			
+			if(this.peek() > b.peek()) {				
+				result.push(this.pop());
+			}
+			else {
+				result.push(b.pop());
+			}
+		}
+		
+		while(!this.isEmpty()) {
+			result.push(this.pop());
+		}
+		
+		while(!b.isEmpty()) {
+			result.push(b.pop());
+		}
+		
+		return result;
+		
+	}
 	@Override
 	public String toString() {
 		
-		Node node = top;
+		Node node = this.top;
 		StringBuilder sb = new StringBuilder();
 		while(node!=null)
 		{
