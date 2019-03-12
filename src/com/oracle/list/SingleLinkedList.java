@@ -4,9 +4,9 @@ public class SingleLinkedList {
 
 	private Node head;
 	
-	private static class Node {
-		int data;
-		Node next;
+	public static class Node {
+		public int data;
+	public 	Node next;
 		
 		Node(int data)
 		{
