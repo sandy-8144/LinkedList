@@ -107,6 +107,71 @@ public class TestExecutor {
 		System.out.println();
 		t3.printPathFromRootIterative();
 		
+		t3.levelOrderTraversal();
+		System.out.println("convert to sum tree");
+		t3.convertToSumTree();
+		t3.levelOrderTraversal();
+		
+		System.out.println();
+		
+		Tree newtree = Tree.getTree();
+		newtree.levelOrderTraversal();
+		newtree.printNodesWhichDoesntHaveSibling();
+		System.out.println();
+		t3.printNodesHavingKLeafs(2);
+		
+
+		  int [] pre = {50,40,30,20,35,45,42,48,55,52,60,56,65};
+		Tree t4 = Tree.constructBSTUsingPreOrder(pre);
+		t4.levelOrderTraversal();
+		t4.postOrderRecursive();
+		System.out.println();
+		System.out.println("in-order bst..");
+		t4.inOrder();
+		System.out.println();
+		
+		t4.findLCA(56,48);
+		System.out.println();
+		t4.postOrderRecursive();
+		System.out.println();
+		t4.serialize();
+		System.out.println();
+		Tree t5 = Tree.deSerilize(t4.serialize());
+		t5.postOrderIterative();
+		System.out.println();
+		t3.createBinaryToBST();
+		System.out.println();
+		t3.postOrderIterative();
+		System.out.println();
+		t3.inOrder();
+		System.out.println();
+		t3.levelOrderTraversal();
+		System.out.println();
+		t3.convertIntoInorderArray();
+		
+		int sort [] = {20,30,35,40,42,45,48,50,52,55,56,60,65};
+		Tree t6 = Tree.createBSTFromAnSortedArray(sort);
+		System.out.println();
+		t6.levelOrderTraversal();
+		System.out.println();
+		t6.postOrderIterative();
+		System.out.println();
+		Tree t7 = Tree.getTree();
+		System.out.println(" is sum tree: "+t7.checkIfBinaryTreeIsSumTree());
+		
+		System.out.println();
+		
+		t7.mergeTwoBST(Tree.getTree1().getRoot());
+		System.out.println();
+		t7.levelOrderTraversal();
+		
+		Tree bst = Tree.getBST();
+		bst.successorInBST(15);
+		bst.successorInBST(18);
+		bst.successorInBST(20);
+		bst.preInBST(15);
+		bst.preInBST(13);
+		bst.preInBST(20);
 		
 	}
 

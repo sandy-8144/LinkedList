@@ -1,5 +1,6 @@
 package com.oracle.Tree;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -17,7 +18,13 @@ public class Tree {
 	private static int countX=0;
 	private static int even, odd;
 	private static int diameter;
+	private static boolean v1=false;
+	private static boolean v2=false;
+	private static boolean v11=false;
+	private static boolean v21=false;
 	
+	private static int index=0;
+	private static int inOrderIndex=0;
 	private static class Node {
 		
 		int data;
@@ -54,6 +61,129 @@ public class Tree {
 	
 		inorder(root);
 		System.out.println();
+	}
+	
+	
+	
+	
+	public void successorInBST(int data) {
+		
+		int [] successor= {-23} ;
+		successorInBST(this.root,data,successor);
+		System.out.println("successor:"+successor[0]);
+	}
+	
+	
+public void preInBST(int data) {
+		
+		int [] pred= {-23} ;
+		preInBST(this.root,data,pred);
+		System.out.println("pred:"+pred[0]);
+	}
+	
+
+private void preInBST(Node node , int data, int [] pred) {
+	if(node ==null)
+		return ;
+	
+	if(node.data == data)
+	{
+		
+		if(node.left!=null)
+		{
+			Node temp = node.left;
+			while (temp.right!=null)
+			{
+				
+				temp = temp.right;
+				
+			}
+			pred[0] = temp.data;
+			
+		}
+		
+		
+	} else if ( node.data > data)
+	{
+		
+		preInBST(node.left , data, pred);
+	}else {
+		pred[0] = node.data;
+		preInBST(node.right , data, pred);
+	}
+	
+	
+}
+	
+	private void successorInBST(Node node , int data, int [] suc) {
+		if(node ==null)
+			return ;
+		
+		if(node.data == data)
+		{
+			
+			if(node.right!=null)
+			{
+				Node temp = node.right;
+				while (temp.left!=null)
+				{
+					
+					temp = temp.left;
+					
+				}
+				
+				suc[0] = temp.data;
+				
+			}
+			
+			
+		} else if ( node.data > data)
+		{
+			suc[0] = node.data;
+			successorInBST(node.left , data, suc);
+		}else {
+			successorInBST(node.right , data, suc);
+		}
+		
+		
+	}
+	public boolean searchBST(int data)
+	{
+		return searchBST(this.root,data);
+	}
+	
+	private boolean searchBST(Node node, int data) {		
+		if(node == null)
+			return false;
+		if(node.data == data)
+			return true;
+		if(data < node.data)
+			return searchBST(node.left,data);
+		else 
+			return searchBST(node.right,data);		
+	}
+	
+	public void insertBST(int data)
+	{
+		this.root = insertBSTRec(this.root,data);
+	}
+	
+	private Node insertBSTRec(Node node , int data) {
+		
+		if(node==null)
+		{
+			return new Node(data);
+		}
+		
+		if(data < node.data)
+		node.left = insertBSTRec(node.left, data);
+		else if ( data > node.data)
+			node.right = insertBSTRec(node.right, data);
+		
+	
+			
+		
+		return node;
 	}
 	
 	public void insert(int data) {
@@ -191,6 +321,252 @@ public class Tree {
 		
 	}
 	
+	
+	private static Node deSerializeInternal(Integer [] input)
+	{
+		if(index > input.length || input [index]==-1)
+		{
+			index++;
+			return null;
+		}
+		
+		Node node = new Node (input [index++]);
+		
+		Node left = deSerializeInternal(input);
+		Node right = deSerializeInternal(input);
+		node .left = left;
+		node.right = right;
+		
+		return node;
+			
+		
+		
+	}
+	
+	
+	public void  convertIntoInorderArray() {
+		int [] inorder = new int [8];
+		
+		convertIntoInorderArray(this.root,inorder);
+		for(int in : inorder)
+			System.out.print(in+" ");
+		
+	}
+	
+	private void convertIntoInorderArray( Node node , int [] inorder) {
+		
+		if(node ==null)
+			return ;
+		
+		convertIntoInorderArray(node.left,inorder);
+		inorder[inOrderIndex++] = node.data;
+		convertIntoInorderArray(node.right,inorder);
+		
+		
+	}
+	public void createBinaryToBST() {
+		// TC: O(nlogn). SC: O(n)
+		int [] inorder = new int [8];
+		int [] index = {0}; // index either should be any ref type or a static variable. if its a static variable , then there is 
+		// no need to pass this as method arg
+		
+		
+
+		
+		
+		
+		createInorderArray(this.root,inorder, index);
+		System.out.println("printing in order array");
+		for(int in : inorder)
+			System.out.print(in+" ");
+		
+		System.out.println();
+		Arrays.sort(inorder);
+		index[0]=0;
+		replaceNodeValues(this.root, inorder, index);
+		
+	}
+	
+	private void replaceNodeValues(Node node, int [] order , int  [] index)
+	{
+		if(node ==null)
+			return ;
+		
+		replaceNodeValues(node.left,order,index);
+		node.data = order[index[0]];
+		index[0] = index[0]+1;
+		replaceNodeValues(node.right,order,index);
+		
+		
+		
+		
+	}
+	
+	private void createInorderArray(Node root , int [] inorder , int [] index)
+	{
+		if(root ==null)
+			return;
+		
+		createInorderArray(root.left,inorder,index);
+		inorder[index[0]]=root.data;
+		index[0] = index[0]+1;
+		createInorderArray(root.right,inorder,index);
+		
+		
+		
+	}
+	
+	public static Tree deSerilize(Integer [] input)
+	{
+		Node root = deSerializeInternal(input);
+		return new Tree(root);
+		
+	}
+	
+	
+	public Integer []  serialize() {
+		List<Integer> tree = new LinkedList<Integer>();
+		 
+		serialize(this.root,tree);
+	//you cant convert list to array diectly. 	
+		Integer [] arr = tree.toArray(new Integer [tree.size()]);
+		for(Integer value : arr)
+			System.out.print(value+" ");
+		return arr;
+		
+	}
+	
+	
+	private void serialize(Node root, List<Integer> tree)
+	{
+		if(root==null) {
+			tree.add(-1);
+			return;
+		}
+		tree.add(root.data);
+		serialize(root.left,tree);
+		serialize(root.right,tree);
+		
+		
+	}
+	
+	public void findLCAInBST(int n1, int n2) {
+		int lca = findLCAInBST(this.root,n1,n2);
+		
+		
+	}
+	
+	private int findLCAInBST( Node node, int n1, int n2) {
+		
+		if(node==null)
+			return -1;
+		if(node.data==n1) {
+			v1=true;
+			return node.data;
+		}
+		
+		if(node.data == n2)
+		{
+			
+			return node.data;
+		}
+		
+		if(n1>node.data && n2 > node.data)
+		{
+			return findLCAInBST(node.right,n1,n2);
+		}
+		
+		else if(n1 < node.data && n2 < node.data)
+		{
+			return findLCAInBST(node.left,n1,n2);
+		}
+		else {
+			return node.data;
+		}
+	}
+	
+	public void findLCA(int n1, int n2)
+	{
+		int lca = findLCA(this.root,n1,n2);
+		if(v1&&v2)
+		System.out.println("LCA:"+lca);
+		else
+			System.out.println("LCA:"+-1);
+		
+	}
+	
+	// with out using boolean variable, this code will assume that both keys present in tree. if one key is missing it will return other key
+	// as LCA. 
+	private int findLCA(Node root, int n1, int n2)
+	{
+		if(root==null)
+			return -1;
+		if(root.data==n1)
+			{  
+			   v1=true;
+			   return root.data;
+			}
+		if(root.data==n2) {
+			v2=true;
+			return root.data;
+		}
+		
+		int leftLCA = findLCA(root.left,n1,n2);
+		int rightLCA = findLCA(root.right,n1,n2);
+		
+		if(leftLCA!=-1 && rightLCA!=-1)
+			return root.data;
+		if(leftLCA!=-1)
+			return leftLCA;
+		
+		if(rightLCA!=-1)
+			return rightLCA;
+		
+		// NO LCA found
+		return -1;
+		
+		
+		
+	}
+	
+	public static Tree constructBSTUsingPreOrder(int [] pre) {
+		
+		Node root = constructBSTUsingPreOrder(pre, 0, pre.length-1);
+		return new Tree(root);
+	}
+	
+	public static Node constructBSTUsingPreOrder(int [] pre, int start , int end) {
+		
+		if(start > end)
+			return null;
+		Node node = new Node(pre[start]);
+		
+		if(start == end)
+			return node;
+		
+		int index = getNewIndex(pre, pre[start],start+1, end);
+		
+		Node left = constructBSTUsingPreOrder(pre, start+1,index-1);
+		Node right = constructBSTUsingPreOrder(pre, index,end);
+		
+		node.left=left;
+		node.right=right;
+		return node;
+		
+		
+	}
+	
+	private static int getNewIndex(int [] pre, int data, int start , int end)
+	{
+		for (int i= start; i<=end;i++) {
+			if(pre[i] > data)
+				return i;
+		}
+		
+	return Integer.MIN_VALUE;
+			
+		
+	}
 	
 	public void rightView() {
 		Node temp = this.root;
@@ -445,6 +821,138 @@ public class Tree {
 			System.out.print(sortedMap.get(m).data+",");
 		
 	}
+	
+	public void printNodesWhichDoesntHaveSibling()
+	{
+		printNodesWhichDoesntHaveSibling(this.root);
+		
+	}
+	
+	
+	public static Tree getTree()
+	{
+		
+		/*Node root = new Node(1);
+		root.left = new Node(2);
+		root.right = new Node(3);
+		root.left.right = new Node(4);
+		root.right.left = new Node(5);
+		root.right.left.left = new Node(6);*/
+		
+		Node root = new Node(26);
+		root.left=new Node(11);
+		root.right = new Node(3);
+		root.left.left = new Node(4);
+		root.left.right = new Node(6);
+		root.right.left= new Node(1);
+		root.right.right= new Node(2);
+		
+		
+		
+		return new Tree(root);
+		
+		
+		
+	}
+	
+	
+	public static Tree getTree1()
+	{
+		
+		/*Node root = new Node(1);
+		root.left = new Node(2);
+		root.right = new Node(3);
+		root.left.right = new Node(4);
+		root.right.left = new Node(5);
+		root.right.left.left = new Node(6);*/
+		
+		Node root = new Node(10);
+		root.left=new Node(15);
+		root.right = new Node(3);
+		root.left.left = new Node(4);
+		//root.left.left.right = new Node(6);
+		root.right.left= new Node(1);
+		root.right.right= new Node(9);
+		
+		
+		
+		return new Tree(root);
+		
+		
+		
+	}
+	
+	
+	
+	public static Tree getBST()
+	{
+		
+		/*Node root = new Node(1);
+		root.left = new Node(2);
+		root.right = new Node(3);
+		root.left.right = new Node(4);
+		root.right.left = new Node(5);
+		root.right.left.left = new Node(6);*/
+		
+		Node root = new Node(15);
+		root.left=new Node(6);
+		root.right = new Node(18);
+		root.left.left = new Node(3);
+		root.left.right = new Node(7);
+		root.left.right.right = new Node(13);
+		root.left.right.right.left = new Node(9);
+		root.right.left= new Node(17);
+		root.right.right= new Node(20);
+		
+		
+		
+		return new Tree(root);
+		
+		
+		
+	}
+	
+	private void printNodesWhichDoesntHaveSibling(Node node) {
+		
+		if(node==null)
+			return ;
+		
+		if(node.right==null && node.left!=null)
+			System.out.print(node.left.data+" ");
+		
+		if(node.left==null && node.right!=null)
+			System.out.print(node.right.data+" ");
+		
+		printNodesWhichDoesntHaveSibling(node.left);
+		printNodesWhichDoesntHaveSibling(node.right);
+		
+		
+		
+		
+	}
+	
+	public void printNodesHavingKLeafs(int noOfLeafs) {
+		
+		printNodesHavingKLeafs(this.root,noOfLeafs);
+		
+	}
+	
+	
+	private int printNodesHavingKLeafs( Node root, int noOfLeafs) {
+		
+		if(root==null)
+			return 0;
+		
+		if(root.left==null && root.right==null)
+			return 1;
+		
+		int t = printNodesHavingKLeafs(root.left,noOfLeafs)+ printNodesHavingKLeafs(root.right,noOfLeafs);
+		if(t==noOfLeafs)
+			System.out.print(root.data+" ");
+		return t;
+		
+		
+	}
 	public void levelOrderTraversalRecursion() {
 		Node root = this.root;
 		
@@ -488,6 +996,49 @@ public class Tree {
 		return n1.data==n2.data && isMirrorRecursive(n1.left,n2.right) && isMirrorRecursive(n1.right,n2.left);
 	}
 	
+	
+	public void mergeTwoBST(Node n2) {
+		
+		mergeTwoBST(this.root , n2);
+		
+	
+	}
+	
+	public Node mergeTwoBST(Node n1 , Node n2)
+	{
+		if(n1==null)
+			return n2;
+		if(n2==null)
+			return n1;
+		
+		n1.data = n1.data+n2.data;
+		n1.left = mergeTwoBST(n1.left,n2.left);
+		n1.right = mergeTwoBST(n1.right,n2.right);
+		
+		return n1;
+		
+		
+	}
+	public void convertToSumTree() {
+		// TC: O(n)
+		convertToSumTree(this.root);
+	}
+	
+	private int convertToSumTree(Node node) {
+		
+		if(node==null)
+			return 0;
+		
+		int oldVal = node.data;
+		
+		int leftSum = convertToSumTree(node.left);
+		int rightSum = convertToSumTree(node.right);
+		node.data = leftSum+rightSum;
+		
+		return node.data+oldVal;
+		
+	}
+	
 	public boolean isMirror(Node n1, Node n2)
 	{
 	  // TC O(n), SC O(n)
@@ -511,6 +1062,8 @@ public class Tree {
 				q1.add(t1.left);
 			if(t1.right!=null)
 				q1.add(t1.right);
+			
+			// There is no need to swap. just .
 			Node temp = t2.left;
 			t2.left=t2.right;
 			t2.right=temp;
@@ -1164,6 +1717,25 @@ public void postOrderRecursive() {
 	
 	
 	
+	public boolean checkIfBinaryTreeIsSumTree()
+	{
+		return checkIfBinaryTreeIsSumTree(this.root);
+	}
+	
+	private boolean checkIfBinaryTreeIsSumTree(Node node) {
+		
+		if(node==null)
+			return true;
+		
+		int leftSum = sumOfBinaryTree(node.left);
+		int rightSum = sumOfBinaryTree(node.right);
+		
+		if(leftSum+rightSum==node.data)
+			return true;
+		else 
+			return false;
+		
+	}
 	public int sumOfBinaryTree()
 	{
 		
@@ -1391,9 +1963,55 @@ public void postOrderRecursive() {
 	}
 	
 	
+	/*public int evalExpressionTree(Node root)
+    {
+        //Your code here.
+        if(root == null)
+          return -1;
+        if(root.left == null && root.right == null)
+          {
+        	return Integer.parseInt(root.data);
+          }
+        int left = evalExpressionTree(root.left);
+        int right = evalExpressionTree(root.right);
+        if(root.data.equals("+"))
+          return left+right;
+        else if(root.data.equals("-"))
+          return left-right;
+        else if(root.data.equals("*"))
+          return left*right;
+        else if(root.data.equals("/"))
+          return left/right;
+        else
+          {System.out.println("Invalid operand");return -1;}
+    }*/
 	
+	public static Tree createBSTFromAnSortedArray(int [] sortedArray)
+	{
+		//TC: O(n)
+		
+		Node root = createBSTFromAnSortedArray(sortedArray, 0, sortedArray.length-1);
+		return new Tree(root);
+		
+	}
 	
-	
+	private static Node createBSTFromAnSortedArray(int [] array , int start , int end)
+	{
+		if(start > end)
+			return null;
+		
+		int index = (start+end)/2;
+		Node node = new Node(array[index]);
+		
+		Node left = createBSTFromAnSortedArray(array, start, index-1);
+		Node right = createBSTFromAnSortedArray(array , index+1, end);
+		
+		node.left = left;
+		node.right = right;
+		
+		return node;
+		
+	}
 	
 	public void printAllLeafNodeFromLeftToRight() {
 		Node temp = this.root;
